@@ -17,6 +17,7 @@ TAGS = [
     {'slug': 'linux', 'name': 'TAG Linux'},
 ]
 
+
 def main(request):  
     context = {
         "url_posts": reverse("blog:posts"),
@@ -64,3 +65,11 @@ def tag_detail(request, tag_slug):
         'data': None,
     }
     return render(request, 'details.html', context=context)
+
+
+def post_detail(request, post_slug):
+    context = {
+        'title': f'Post detail {post_slug.title()}',
+        'name': f'Post detail "{post_slug.upper()}"',
+    }
+    return render(request, 'post_detail.html', context=context)
