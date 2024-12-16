@@ -9,6 +9,13 @@ CATEGORIES = [
     {'slug': 'docker', 'name': 'Docker'},
     {'slug': 'linux', 'name': 'Linux'},
 ]
+TAGS = [
+    {'slug': 'python', 'name': 'TAG Python'},
+    {'slug': 'django', 'name': 'TAG Django'},
+    {'slug': 'postgresql', 'name': 'TAG PostgreSQL'},
+    {'slug': 'docker', 'name': 'TAG Docker'},
+    {'slug': 'linux', 'name': 'TAG Linux'},
+]
 
 def main(request):  
     context = {
@@ -29,7 +36,7 @@ def catalog_categories(request):
     context = {
         'title': 'Catalog categories',
         'name': 'Catalog categories',
-        'categories': CATEGORIES,
+        'data': CATEGORIES,
     }
     return render(request, 'details.html', context=context)
 
@@ -37,5 +44,23 @@ def catalog_tags(request):
     context = {
         'title': 'Catalog tags',
         'name': 'Catalog tags',
+        'data': TAGS,
+    }
+    return render(request, 'details.html', context=context)
+
+
+def category_detail(request, category_slug):
+    context = {
+        'title': f'Category detail {category_slug.title()}',
+        'name': f'Category detail "{category_slug.upper()}"',
+        'data': None,
+    }
+    return render(request, 'details.html', context=context)
+
+def tag_detail(request, tag_slug):
+    context = {
+        'title': f'Tag detail {tag_slug.title()}',
+        'name': f'Tag detail "{tag_slug.upper()}"',
+        'data': None,
     }
     return render(request, 'details.html', context=context)

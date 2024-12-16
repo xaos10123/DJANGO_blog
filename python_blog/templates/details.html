@@ -8,8 +8,12 @@
 <body>
     <h1>{{ name }}</h1>
     <hr>
-    {% for cat in categories%}
-    <a href="{{ cat.slug }}">{{ cat.name }}</a>
+    {% if data == None %}
+    <p>No data</p>
+    {% endif %}
+
+    {% for entities in data%}
+    <a href="{{ entities.slug }}">{{ entities.name }}</a>
     <br>
     {% endfor %}
     
