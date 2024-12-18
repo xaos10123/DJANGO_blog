@@ -78,4 +78,4 @@ def about(request):
         'title': 'About',
         'name': 'About',
     }
-    return render(request, 'python_blog/about.html', context=context)
+    return render(request, 'about.html', context=context)
