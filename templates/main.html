@@ -1,19 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>{{ title }}</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+	Main page BLOG
+{% endblock title %}
+
+{% block head %}
+	<link rel="stylesheet" href="{% static 'css/main.css' %}">
+{% endblock head %}
+
+{% block content %}
 	<h1>Main page</h1>
-	<hr>
-	
 	<a href="{{url_posts}}">Posts</a>
 	<br>
 	<a href="{{url_categories}}">Categories</a>
 	<br>
 	<a href="{{url_tags}}">Tags</a>	
-</body>
-</html>
+{% endblock content %}
+

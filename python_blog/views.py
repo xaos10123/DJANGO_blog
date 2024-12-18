@@ -1,6 +1,5 @@
 from django.shortcuts import render
 from django.urls import reverse
-from django.http import HttpResponse
 
 CATEGORIES = [
     {'slug': 'python', 'name': 'Python'},
@@ -31,7 +30,7 @@ def catalog_posts(request):
         'title': 'Catalog posts',
         'name': 'Catalog posts',
     }
-    return render(request, 'details.html', context=context)
+    return render(request, 'python_blog/details.html', context=context)
 
 def catalog_categories(request):
     context = {
@@ -39,7 +38,7 @@ def catalog_categories(request):
         'name': 'Catalog categories',
         'data': CATEGORIES,
     }
-    return render(request, 'details.html', context=context)
+    return render(request, 'python_blog/details.html', context=context)
 
 def catalog_tags(request):
     context = {
@@ -47,7 +46,7 @@ def catalog_tags(request):
         'name': 'Catalog tags',
         'data': TAGS,
     }
-    return render(request, 'details.html', context=context)
+    return render(request, 'python_blog/details.html', context=context)
 
 
 def category_detail(request, category_slug):
@@ -56,7 +55,7 @@ def category_detail(request, category_slug):
         'name': f'Category detail "{category_slug.upper()}"',
         'data': None,
     }
-    return render(request, 'details.html', context=context)
+    return render(request, 'python_blog/details.html', context=context)
 
 def tag_detail(request, tag_slug):
     context = {
@@ -64,7 +63,7 @@ def tag_detail(request, tag_slug):
         'name': f'Tag detail "{tag_slug.upper()}"',
         'data': None,
     }
-    return render(request, 'details.html', context=context)
+    return render(request, 'python_blog/details.html', context=context)
 
 
 def post_detail(request, post_slug):
@@ -72,4 +71,11 @@ def post_detail(request, post_slug):
         'title': f'Post detail {post_slug.title()}',
         'name': f'Post detail "{post_slug.upper()}"',
     }
-    return render(request, 'post_detail.html', context=context)
+    return render(request, 'python_blog/post_detail.html', context=context)
+
+def about(request):
+    context = {
+        'title': 'About',
+        'name': 'About',
+    }
+    return render(request, 'python_blog/about.html', context=context)
