@@ -21,9 +21,11 @@ TAGS = [
 
 
 def main(request):  
-    data = dataset[:3]
+    last_data = [datax for datax in dataset if datax['is_published'] is True][-3:]
+    most_liked = sorted(filter(lambda x: x['is_published'] is True, dataset), key=lambda x: x['likes'], reverse=True)[:1]
     context = {
-        'data' : data,
+        'data' : last_data,
+        'most_liked': most_liked,
         'categories': CATEGORIES,
         'tags': TAGS,
     }  
