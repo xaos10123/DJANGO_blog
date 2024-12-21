@@ -1,24 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{title}}</title>
-</head>
-<body>
-    <h1>{{ name }}</h1>
-    <hr>
-    {% if data == None %}
-    <p>No data</p>
+{% extends "base.html" %}
+
+{% block title %}
+	{{ title }}
+{% endblock title %}
+
+{% block content %}
+	<h1>{{ title }}</h1>
+
+    {% if datails %}
+
+        {% include "python_blog/post_preview_include.html" %}
+
+    {% else %}
+    
+    <nav>
+        <ul>
+            {% for item in data %}
+                <li><a href="{{ item.slug }}">{{item.name}}</a></li>
+            {% endfor %}
+        </ul>
+    </nav>
+
     {% endif %}
 
-    {% for entities in data%}
-    <a href="{{ entities.slug }}">{{ entities.name }}</a>
-    <br>
-    {% endfor %}
-
-    <hr>
-    <a href="{% url "home" %}">Back to Main page</a>
-    
-</body>
-</html>
+{% endblock content %}

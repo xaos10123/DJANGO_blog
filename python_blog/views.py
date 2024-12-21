@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.urls import reverse
+from python_blog.blog_data import dataset
 
 CATEGORIES = [
     {'slug': 'python', 'name': 'Python'},
@@ -17,11 +18,14 @@ TAGS = [
 ]
 
 
+
+
 def main(request):  
+    data = dataset[:3]
     context = {
-        "url_posts": reverse("blog:posts"),
-        "url_categories": reverse("blog:categories"),
-        "url_tags": reverse("blog:tags"),
+        'data' : data,
+        'categories': CATEGORIES,
+        'tags': TAGS,
     }  
     return render(request, 'main.html', context=context)
 
@@ -29,8 +33,9 @@ def catalog_posts(request):
     context = {
         'title': 'Catalog posts',
         'name': 'Catalog posts',
+        'data': dataset,
     }
-    return render(request, 'python_blog/details.html', context=context)
+    return render(request, 'python_blog/blog.html', context=context)
 
 def catalog_categories(request):
     context = {
@@ -50,26 +55,37 @@ def catalog_tags(request):
 
 
 def category_detail(request, category_slug):
+    data = [datax for datax in dataset if category_slug.lower() in datax['hashtags']]
     context = {
         'title': f'Category detail {category_slug.title()}',
         'name': f'Category detail "{category_slug.upper()}"',
-        'data': None,
+        'datails': True,
+        'data': data,
     }
     return render(request, 'python_blog/details.html', context=context)
 
 def tag_detail(request, tag_slug):
+    data = [datax for datax in dataset if tag_slug.lower() in datax['hashtags']]
     context = {
         'title': f'Tag detail {tag_slug.title()}',
         'name': f'Tag detail "{tag_slug.upper()}"',
-        'data': None,
+        'datails': True,
+        'data': data,
     }
     return render(request, 'python_blog/details.html', context=context)
 
 
 def post_detail(request, post_slug):
+    data = None
+    for post in dataset:
+        if post['slug'] == post_slug:
+            data = post
+    if data is None:
+        return render(request, '404.html')
+    
+    
     context = {
-        'title': f'Post detail {post_slug.title()}',
-        'name': f'Post detail "{post_slug.upper()}"',
+        'data': data,
     }
     return render(request, 'python_blog/post_detail.html', context=context)
 

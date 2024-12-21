@@ -1,0 +1,14 @@
+{% for item in data %}
+    {% if item.is_published %}
+        <div style="border:1px solid; margin-bottom:5px">
+            <p>{{item.title}}</p>
+            Tags:
+            {% for tag in item.hashtags %}
+                <a href="{% url "blog:tags" %}{{tag}}">{{tag}}</a>
+            {% endfor %}
+            <br>
+
+            <a href="{% url "blog:posts" %}{{item.slug}}" type='button'>Перейти</a>
+        </div>
+    {% endif %}
+{% endfor %}
