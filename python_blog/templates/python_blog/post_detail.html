@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-	Detail page for "{{ title }}"
+	Detail page for "{{ data.title }}"
 {% endblock title %}
 
 {% block head %}
@@ -10,5 +10,21 @@
 {% endblock head %}
 
 {% block content %}
-	<h1>Detail page for "{{ title }}"</h1>	
+	<h1>Detail page for "{{ data.title }}"</h1>
+	<p>{{ data.post }}</p>
+	<p>Tags:
+	{% for tag in data.hashtags %}
+        <a href="{% url "blog:tags" %}{{tag}}">{{tag}}</a>
+    {% endfor %}
+	</p>
+	<div>Views: {{ data.views }}</div>
+	<div>Likes: {{ data.likes }}</div>
+	{% if data.comments %}
+		<h4>Comments</h4>
+		{% for comment in data.comments %}
+		<span style="font-weight:500; background-color: #fff">{{ comment.username }} write:</span>
+		<p>{{ comment.text }}</p>
+		<hr>
+		{% endfor %}
+	{% endif %}	
 {% endblock content %}

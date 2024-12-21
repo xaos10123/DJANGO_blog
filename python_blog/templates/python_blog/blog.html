@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+{{ title }}
+{% endblock title %}
+
+{% block content %}
+
+<h1>{{ title }}</h1>
+{% include "python_blog/post_preview_include.html" %}
+
+
+{% endblock content %}
+
