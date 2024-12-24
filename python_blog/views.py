@@ -1,6 +1,9 @@
 from django.shortcuts import render
 from django.urls import reverse
-from python_blog.blog_data import dataset
+# from python_blog.blog_data import dataset
+from python_blog.models import Post
+from unidecode import unidecode
+from django.utils.text import slugify
 
 CATEGORIES = [
     {'slug': 'python', 'name': 'Python'},
@@ -21,11 +24,10 @@ TAGS = [
 
 
 def main(request):  
-    last_data = [datax for datax in dataset if datax['is_published'] is True][-3:]
-    most_liked = sorted(filter(lambda x: x['is_published'] is True, dataset), key=lambda x: x['likes'], reverse=True)[:1]
+    last_data = Post.objects.all()
     context = {
-        'data' : last_data,
-        'most_liked': most_liked,
+        'datax' : last_data,
+        'most_liked': '',
         'categories': CATEGORIES,
         'tags': TAGS,
     }  
@@ -35,7 +37,7 @@ def catalog_posts(request):
     context = {
         'title': 'Catalog posts',
         'name': 'Catalog posts',
-        'data': dataset,
+        'datax': Post.objects.all(),
     }
     return render(request, 'python_blog/blog.html', context=context)
 
@@ -57,37 +59,38 @@ def catalog_tags(request):
 
 
 def category_detail(request, category_slug):
-    data = [datax for datax in dataset if category_slug.lower() in datax['hashtags']]
+    data = Post.objects.all()
     context = {
         'title': f'Category detail {category_slug.title()}',
         'name': f'Category detail "{category_slug.upper()}"',
         'datails': True,
-        'data': data,
+        'datax': data,
     }
     return render(request, 'python_blog/details.html', context=context)
 
 def tag_detail(request, tag_slug):
-    data = [datax for datax in dataset if tag_slug.lower() in datax['hashtags']]
+    data = Post.objects.all()
     context = {
         'title': f'Tag detail {tag_slug.title()}',
         'name': f'Tag detail "{tag_slug.upper()}"',
         'datails': True,
-        'data': data,
+        'datax': data,
     }
     return render(request, 'python_blog/details.html', context=context)
 
 
 def post_detail(request, post_slug):
-    data = None
-    for post in dataset:
-        if post['slug'] == post_slug:
-            data = post
-    if data is None:
+    datax = None
+    for post in Post.objects.all():
+        if post.slug == post_slug:
+            datax = post
+    if datax is None:
         return render(request, '404.html')
     
     
     context = {
-        'data': data,
+        'datax': datax,
+        'tagsx': {k: v for k, v in zip(datax.data['tags'], [slugify(unidecode(tag)) for tag in datax.data['tags']])}
     }
     return render(request, 'python_blog/post_detail.html', context=context)
 

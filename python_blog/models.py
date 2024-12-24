@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from unidecode import unidecode
 from django.utils.text import slugify
 
 class Post(models.Model):
@@ -13,7 +14,8 @@ class Post(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(self.title)
+            self.slug = slugify(unidecode(self.title))
+            print(self.slug)
         super().save(*args, **kwargs)
 
     def __str__(self):

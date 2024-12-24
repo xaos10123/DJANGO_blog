@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-	Detail page for "{{ data.title }}"
+	Detail page for "{{ datax.title }}"
 {% endblock title %}
 
 {% block head %}
@@ -10,21 +10,25 @@
 {% endblock head %}
 
 {% block content %}
-	<h1>Detail page for "{{ data.title }}"</h1>
-	<p>{{ data.post }}</p>
+	<h1>Detail page for "{{ datax.title }}"</h1>
+	<p>{{ datax.text }}</p>
 	<p>Tags:
-	{% for tag in data.hashtags %}
-        <a href="{% url "blog:tags" %}{{tag}}">{{tag}}</a>
+	{% for tag_name, tag_slug in tagsx.items %}
+        <a href="{% url "blog:tags" %}{{tag_slug}}">{{tag_name}}</a>
     {% endfor %}
 	</p>
-	<div>Views: {{ data.views }}</div>
-	<div>Likes: {{ data.likes }}</div>
-	{% if data.comments %}
+	<div>Views: {{ datax.views | default:"Нет информации" }}</div>
+	<div>Likes: {{ datax.likes | default:"Нет информации" }}</div>
+	{% if datax.comments %}
 		<h4>Comments</h4>
-		{% for comment in data.comments %}
-		<span style="font-weight:500; background-color: #fff">{{ comment.username }} write:</span>
-		<p>{{ comment.text }}</p>
-		<hr>
-		{% endfor %}
+		{% if datax.comments %}
+			{% for comment in datax.comments %}
+				<span style="font-weight:500; background-color: #fff">{{ comment.username }} write:</span>
+				<p>{{ comment.text }}</p>
+				<hr>
+			{% endfor %}
+		{% else %}
+			<p>No comments</p>
+		{% endif %}
 	{% endif %}	
 {% endblock content %}
