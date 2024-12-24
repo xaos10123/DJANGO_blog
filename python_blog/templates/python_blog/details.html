@@ -15,8 +15,8 @@
     
     <nav>
         <ul>
-            {% for item in data %}
-                <li><a href="{{ item.slug }}">{{item.name}}</a></li>
+            {% for k, v in data.items %}
+                <li><a href="{{ v }}">{{ k }}</a></li>
             {% endfor %}
         </ul>
     </nav>

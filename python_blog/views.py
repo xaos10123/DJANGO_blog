@@ -49,21 +49,28 @@ def catalog_posts(request):
         'datax': posts,
         'tags': posts_tags,
     }
+    
     return render(request, 'python_blog/blog.html', context=context)
 
 def catalog_categories(request):
+    posts = Post.objects.all()
+    categories = set(map(lambda x : x.data['category'], posts))
+    cat_dict = {k:v for k, v in zip(categories, [slugify(unidecode(cat)) for cat in categories])}
     context = {
         'title': 'Catalog categories',
         'name': 'Catalog categories',
-        'data': CATEGORIES,
+        'data': cat_dict,
     }
     return render(request, 'python_blog/details.html', context=context)
 
 def catalog_tags(request):
+    posts = Post.objects.all()
+    tags = set([tag for post in posts for tag in post.data['tags']])
+    tags_dict = {k:v for k, v in zip(tags, [slugify(unidecode(tag)) for tag in tags])}
     context = {
         'title': 'Catalog tags',
         'name': 'Catalog tags',
-        'data': TAGS,
+        'data': tags_dict,
     }
     return render(request, 'python_blog/details.html', context=context)
 
