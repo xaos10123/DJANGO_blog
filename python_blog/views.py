@@ -24,20 +24,30 @@ TAGS = [
 
 
 def main(request):  
-    last_data = Post.objects.all()
+    posts = Post.objects.all()[:1]
+    posts_tags = {}
+    for post in posts:
+        posts_tags[post.slug] = {k: v for k, v in zip(post.data['tags'], [slugify(unidecode(tag)) for tag in post.data['tags']])}
+        
     context = {
-        'datax' : last_data,
+        'datax' : posts,
         'most_liked': '',
         'categories': CATEGORIES,
-        'tags': TAGS,
+        'tags': posts_tags,
     }  
     return render(request, 'main.html', context=context)
 
 def catalog_posts(request):
+    posts = Post.objects.all()
+    posts_tags = {}
+    for post in posts:
+        posts_tags[post.slug] = {k: v for k, v in zip(post.data['tags'], [slugify(unidecode(tag)) for tag in post.data['tags']])}
+        
     context = {
         'title': 'Catalog posts',
         'name': 'Catalog posts',
-        'datax': Post.objects.all(),
+        'datax': posts,
+        'tags': posts_tags,
     }
     return render(request, 'python_blog/blog.html', context=context)
 
@@ -59,22 +69,29 @@ def catalog_tags(request):
 
 
 def category_detail(request, category_slug):
-    data = Post.objects.all()
+    datax = list(filter(lambda x : category_slug in [slugify(unidecode(tag)) for tag in x.data['tags']], Post.objects.all()))
     context = {
         'title': f'Category detail {category_slug.title()}',
         'name': f'Category detail "{category_slug.upper()}"',
         'datails': True,
-        'datax': data,
+        'datax': datax,
     }
     return render(request, 'python_blog/details.html', context=context)
 
 def tag_detail(request, tag_slug):
-    data = Post.objects.all()
+    posts = Post.objects.all()
+    data = list(filter(lambda x : tag_slug in [slugify(unidecode(tag)) for tag in x.data['tags']], Post.objects.all()))
+    posts_tags = {}
+    for post in posts:
+        posts_tags[post.slug] = {k: v for k, v in zip(post.data['tags'], [slugify(unidecode(tag)) for tag in post.data['tags']])}
+        
     context = {
         'title': f'Tag detail {tag_slug.title()}',
         'name': f'Tag detail "{tag_slug.upper()}"',
         'datails': True,
         'datax': data,
+        'tags': posts_tags,
+    
     }
     return render(request, 'python_blog/details.html', context=context)
 

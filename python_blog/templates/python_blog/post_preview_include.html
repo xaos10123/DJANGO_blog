@@ -1,12 +1,20 @@
+{% load custom_tags %}
 {% for item in datax %}
-        <div style="border:1px solid; margin-bottom:5px">
-            <p>{{item.title}}</p>
-            Tags:
-            {% for tag in item.data.tags %}
-                <a href="{% url "blog:tags" %}{{tag}}">{{tag}}</a>
-            {% endfor %}
-            <br>
+    <div style="border:1px solid; margin-bottom:5px">
+        <p>{{ item.title }}</p>
+        
+        Tags:
+        {% with tags_for_item=tags|get_item:item.slug %}
+            {% if tags_for_item %}
+                {% for tag, slug in tags_for_item.items %}
+                    <a href="{% url "blog:tags" %}{{slug}}">{{ tag }}</a>
+                {% endfor %}
+            {% else %}
+                <span>Нет тегов</span>
+            {% endif %}
+        {% endwith %}
+        <br>
 
-            <a href="{% url "blog:posts" %}{{item.slug}}" type='button'>Перейти</a>
-        </div>
+        <a href="{% url 'blog:posts'%}{{item.slug }}" type='button'>Перейти</a>
+    </div>
 {% endfor %}
