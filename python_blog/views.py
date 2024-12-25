@@ -76,18 +76,24 @@ def catalog_tags(request):
 
 
 def category_detail(request, category_slug):
-    datax = list(filter(lambda x : category_slug in [slugify(unidecode(tag)) for tag in x.data['tags']], Post.objects.all()))
+    posts = Post.objects.all()
+    data = list(filter(lambda x : category_slug == slugify(unidecode(x.data['category'].lower())), posts))
+    posts_tags = {}
+    for post in posts:
+        posts_tags[post.slug] = {k: v for k, v in zip(post.data['tags'], [slugify(unidecode(tag)) for tag in post.data['tags']])}
     context = {
         'title': f'Category detail {category_slug.title()}',
         'name': f'Category detail "{category_slug.upper()}"',
         'datails': True,
-        'datax': datax,
+        'datax': data,
+        'tags': posts_tags,
     }
+    print(data)
     return render(request, 'python_blog/details.html', context=context)
 
 def tag_detail(request, tag_slug):
     posts = Post.objects.all()
-    data = list(filter(lambda x : tag_slug in [slugify(unidecode(tag)) for tag in x.data['tags']], Post.objects.all()))
+    data = list(filter(lambda x : tag_slug in [slugify(unidecode(tag)) for tag in x.data['tags']], posts))
     posts_tags = {}
     for post in posts:
         posts_tags[post.slug] = {k: v for k, v in zip(post.data['tags'], [slugify(unidecode(tag)) for tag in post.data['tags']])}

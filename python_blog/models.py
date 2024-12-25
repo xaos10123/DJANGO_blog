@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth import get_user_model
 from unidecode import unidecode
 from django.utils.text import slugify
+from django.urls import reverse
 
 class Post(models.Model):
     title = models.CharField(max_length=200)
@@ -22,5 +23,5 @@ class Post(models.Model):
         return self.title
     
     def get_absolute_url(self):
-        return f'/post/{self.slug}'
+        return reverse('blog:post_detail', kwargs={'post_slug': self.slug})
     

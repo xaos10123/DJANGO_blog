@@ -15,6 +15,6 @@
         {% endwith %}
         <br>
 
-        <a href="{% url 'blog:posts'%}{{item.slug }}" type='button'>Перейти</a>
+        <a href="{{ item.get_absolute_url }}">Перейти</a>
     </div>
 {% endfor %}
