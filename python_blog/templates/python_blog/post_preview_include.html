@@ -1,20 +1,22 @@
 {% load custom_tags %}
 {% for item in datax %}
-    <div style="border:1px solid; margin-bottom:5px">
-        <p>{{ item.title }}</p>
-        
-        Tags:
-        {% with tags_for_item=tags|get_item:item.slug %}
-            {% if tags_for_item %}
-                {% for tag, slug in tags_for_item.items %}
-                    <a href="{% url "blog:tags" %}{{slug}}">{{ tag }}</a>
-                {% endfor %}
-            {% else %}
-                <span>Нет тегов</span>
-            {% endif %}
-        {% endwith %}
-        <br>
+    <div class="row border border-primary border-3 rounded-4 shadow px-4 py-3 w-100 mb-5 bg-light-subtle">
+        <div class="col">
+            <p class="fs-3 fw-bold">{{ item.title }}</p>
+            
+            <p class="fw-bold m-0">Tags:</p>
+            {% with tags_for_item=tags|get_item:item.slug %}
+                {% if tags_for_item %}
+                    {% for tag, slug in tags_for_item.items %}
+                        <a href="{% url "blog:tags" %}{{slug}}" class="btn btn-warning py-0 px-2 fst-italic">{{ tag }}</a>
+                    {% endfor %}
+                {% else %}
+                    <span>Нет тегов</span>
+                {% endif %}
+            {% endwith %}
+            <br>
+        </div>
 
-        <a href="{{ item.get_absolute_url }}">Перейти</a>
+        <a href="{{ item.get_absolute_url }}" class="col-1 btn btn-primary fw-bold text-light d-flex align-items-center justify-content-center">Перейти</a>
     </div>
 {% endfor %}
