@@ -4,3 +4,5 @@ DJANGO.pdf
 __pycache__/
 db.sqlite3
 DJANGO.rar
+.vscode
+.pylintrc
