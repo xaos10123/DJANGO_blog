@@ -1,7 +1,7 @@
 {% load custom_tags %}
 {% for post in posts %}
     <div class="row border border-primary border-3 rounded-4 shadow px-4 py-3 w-100 mb-5 bg-light-subtle">
-        <div class="col">
+        <div class="col-10">
             <p class="fs-3 fw-bold">{{ post.title }}</p>
 
             <div class="row">
@@ -25,7 +25,7 @@
             <p class="m-0 mt-3 text-secondary">Просмотры: {{ post.views }}</p>
         </div>
 
-
-        <a href="{{ post.get_absolute_url }}" class="col-1 btn btn-primary fw-bold text-light d-flex align-items-center justify-content-center">Перейти</a>
+<div class="col-2 d-flex justify-content-end align-items-end">
+        <a href="{{ post.get_absolute_url }}" class="w-100 btn btn-primary fw-bold text-light d-flex align-items-center justify-content-center">Перейти</a></div>
     </div>
 {% endfor %}

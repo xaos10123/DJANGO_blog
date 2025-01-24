@@ -11,9 +11,9 @@
     
         {% include "python_blog/post_preview_include.html" %}
 
-        {% if posts.paginator.num_pages > 1 %}
-            {% include "python_blog/include_pagination.html" %}
-        {% endif %}
+        
+        {% include "python_blog/include_pagination.html" %}
+        
     {% else %}
     
     <div class="d-flex flex-wrap h-100">

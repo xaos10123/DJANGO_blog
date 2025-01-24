@@ -1,7 +1,8 @@
 from django.core.paginator import Paginator
-from django.db.models import F, Count
+from django.db.models import F, Q, Count
 from django.shortcuts import render
 from django.urls import reverse
+from python_blog.forms import SearchForm
 from python_blog.models import Category, Post, Tag
 from unidecode import unidecode
 from django.utils.text import slugify
@@ -9,22 +10,39 @@ from django.utils.text import slugify
 
 def main(request):
     posts = Post.objects.select_related('category').prefetch_related('tags').order_by("-created_at")[:3]
+    
     context = {
-        "posts": posts,
+        "posts": posts,        
     }
     return render(request, "main.html", context=context)
 
 
 def catalog_posts(request):
-    posts = Post.objects.select_related('category').prefetch_related('tags').order_by("-created_at")
+    forms = SearchForm(request.GET)
+    q_obj = Q()
+
+    if forms.is_valid():
+        search = forms.cleaned_data.get('search')
+        s_from = forms.cleaned_data.get('s_from')
+        if s_from=='title':
+            q_obj |= Q(title__icontains=search)
+        elif s_from=='tags':
+            q_obj |= Q(tags__name__icontains=search)
+        else:
+            q_obj |= Q(content__icontains=search)
+    
+
+    posts = Post.objects.select_related('category').prefetch_related('tags').filter(q_obj).order_by("-created_at")
     paginator = Paginator(posts, 3)
     page_num = request.GET.get('page', 1)
     paginator = paginator.get_page(page_num)
+            
 
     context = {
         "title": "Каталог постов",
         "posts": paginator,
         'posts_count': posts.count(),
+        "form": forms,
     }
 
     return render(request, "python_blog/blog.html", context=context)
