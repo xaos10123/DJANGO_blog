@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-	Detail page for "{{ datax.title }}"
+	Detail page for "{{ post.title }}"
 {% endblock title %}
 
 {% block head %}
@@ -10,25 +10,15 @@
 {% endblock head %}
 
 {% block content %}
-	<h1>Detail page for "{{ datax.title }}"</h1>
-	<p>{{ datax.text }}</p>
-	<p>Tags:
-	{% for tag_name, tag_slug in tagsx.items %}
-        <a href="{% url "blog:tags" %}{{tag_slug}}">{{tag_name}}</a>
-    {% endfor %}
-	</p>
-	<div>Views: {{ datax.views | default:"Нет информации" }}</div>
-	<div>Likes: {{ datax.likes | default:"Нет информации" }}</div>
-	{% if datax.comments %}
-		<h4>Comments</h4>
-		{% if datax.comments %}
-			{% for comment in datax.comments %}
-				<span style="font-weight:500; background-color: #fff">{{ comment.username }} write:</span>
-				<p>{{ comment.text }}</p>
-				<hr>
-			{% endfor %}
-		{% else %}
-			<p>No comments</p>
-		{% endif %}
-	{% endif %}	
+<div class="border border-primary border-3 rounded-4 shadow px-4 py-3 w-100 mb-5 bg-light-subtle">
+	<h1>Detail page for "{{ post.title }}"</h1>
+	<p>{{ post.content }}</p>
+	<p class="fw-bold m-0">Категория:</p>
+                            <a  href="{% url "blog:categories" %}{{post.category.slug}}" class="btn btn-info py-0 px-2 mb-2 fst-italic">{{post.category}}</a>
+	<p class="fw-bold m-0">Tags:</p>
+	 {% for tag in post.tags.all %}
+        <a href="{% url "blog:tags" %}{{tag.slug}}" class="btn btn-warning py-0 px-2 fst-italic">{{tag.name}}</a>
+    {% endfor %} 
+</div>
+	
 {% endblock content %}

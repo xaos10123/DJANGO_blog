@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator
 from django.db.models import Count
 from django.shortcuts import render
 from django.urls import reverse
@@ -16,10 +17,13 @@ def main(request):
 
 def catalog_posts(request):
     posts = Post.objects.select_related('category').prefetch_related('tags').order_by("-created_at")
+    paginator = Paginator(posts, 3)
+    page_num = request.GET.get('page', 1)
+    paginator = paginator.get_page(page_num)
 
     context = {
         "title": "Каталог постов",
-        "posts": posts,
+        "posts": paginator,
         'posts_count': posts.count(),
     }
 
@@ -51,78 +55,43 @@ def catalog_tags(request):
 
 
 def category_detail(request, category_slug):
-    posts = Post.objects.all()
-    data = list(
-        filter(
-            lambda x: category_slug == slugify(unidecode(x.data["category"].lower())),
-            posts,
-        )
-    )
-    posts_tags = {}
-    for post in posts:
-        posts_tags[post.slug] = {
-            k: v
-            for k, v in zip(
-                post.data["tags"],
-                [slugify(unidecode(tag)) for tag in post.data["tags"]],
-            )
-        }
+    posts = Post.objects.filter(category__slug=category_slug).select_for_update('category').prefetch_related('tags')
+    paginator = Paginator(posts, 3)
+    page_num = request.GET.get('page', 1)
+    paginator = paginator.get_page(page_num)
+    
     context = {
-        "title": f"Category detail {category_slug.title()}",
-        "name": f'Category detail "{category_slug.upper()}"',
+        "title": f"Категория {category_slug.title()}",
+        "name": f'Категория "{category_slug.upper()}"',
         "datails": True,
-        "datax": data,
-        "tags": posts_tags,
+        "posts": paginator,
+        "count": posts.count(),
     }
-    print(data)
     return render(request, "python_blog/details.html", context=context)
 
 
 def tag_detail(request, tag_slug):
-    posts = Post.objects.all()
-    data = list(
-        filter(
-            lambda x: tag_slug in [slugify(unidecode(tag)) for tag in x.data["tags"]],
-            posts,
-        )
-    )
-    posts_tags = {}
-    for post in posts:
-        posts_tags[post.slug] = {
-            k: v
-            for k, v in zip(
-                post.data["tags"],
-                [slugify(unidecode(tag)) for tag in post.data["tags"]],
-            )
-        }
-
+    posts = Post.objects.filter(tags__slug=tag_slug).select_for_update('category').prefetch_related('tags')
+    paginator = Paginator(posts, 3)
+    page_num = request.GET.get('page', 1)
+    paginator = paginator.get_page(page_num)
+    
     context = {
-        "title": f"Tag detail {tag_slug.title()}",
-        "name": f'Tag detail "{tag_slug.upper()}"',
+        "title": f"Категория {tag_slug.title()}",
+        "name": f'Категория "{tag_slug.upper()}"',
         "datails": True,
-        "datax": data,
-        "tags": posts_tags,
+        "posts": paginator,
+        "count": posts.count(),
     }
     return render(request, "python_blog/details.html", context=context)
 
 
 def post_detail(request, post_slug):
-    datax = None
-    for post in Post.objects.all():
-        if post.slug == post_slug:
-            datax = post
-    if datax is None:
-        return render(request, "404.html")
+    post = Post.objects.filter(slug=post_slug).select_related('category').prefetch_related('tags').first()
 
     context = {
-        "datax": datax,
-        "tagsx": {
-            k: v
-            for k, v in zip(
-                datax.data["tags"],
-                [slugify(unidecode(tag)) for tag in datax.data["tags"]],
-            )
-        },
+        "post": post,
+
     }
     return render(request, "python_blog/post_detail.html", context=context)
 

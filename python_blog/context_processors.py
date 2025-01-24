@@ -1,8 +1,12 @@
+
+from django.urls import reverse
+
+
 MENU_ITEMS = [
-    {"title": "Главная", "url_name": "main"},
-    {"title": "Все посты", "url_name": "blog:posts"},
-    {"title": "Категории", "url_name": "blog:categories"},
-    {"title": "Теги", "url_name": "blog:tags"},
+    {"title": "Главная", "url_name": 'main', 'url': str(reverse('main'))},
+    {"title": "Все посты", "url_name": "blog:posts", 'url': str(reverse('blog:posts'))},
+    {"title": "Категории", "url_name": "blog:categories", 'url': str(reverse('blog:categories'))},
+    {"title": "Теги", "url_name": "blog:tags", 'url': str(reverse('blog:tags'))},
 ]
 
 
