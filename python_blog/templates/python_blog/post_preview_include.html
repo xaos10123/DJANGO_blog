@@ -1,22 +1,30 @@
 {% load custom_tags %}
-{% for item in datax %}
+{% for post in posts %}
     <div class="row border border-primary border-3 rounded-4 shadow px-4 py-3 w-100 mb-5 bg-light-subtle">
         <div class="col">
-            <p class="fs-3 fw-bold">{{ item.title }}</p>
-            
-            <p class="fw-bold m-0">Tags:</p>
-            {% with tags_for_item=tags|get_item:item.slug %}
-                {% if tags_for_item %}
-                    {% for tag, slug in tags_for_item.items %}
-                        <a href="{% url "blog:tags" %}{{slug}}" class="btn btn-warning py-0 px-2 fst-italic">{{ tag }}</a>
-                    {% endfor %}
-                {% else %}
-                    <span>Нет тегов</span>
-                {% endif %}
-            {% endwith %}
-            <br>
+            <p class="fs-3 fw-bold">{{ post.title }}</p>
+
+            <div class="row">
+                <div class="col">
+                <p class="fw-bold m-0">Категория:</p>
+                            <a  href="{% url "blog:categories" %}{{post.category.slug}}" class="btn btn-info py-0 px-2 mb-2 fst-italic">{{post.category}}</a>
+                </div>
+                <div class="col">
+                <p class="fw-bold m-0">Тэги:</p>
+                                {% if post.tags %}                
+                                    {% for tag in post.tags.all %}
+                                        <a href="{% url "blog:tags" %}{{tag.slug}}" class="btn btn-warning py-0 px-2 fst-italic">{{ tag.name }}</a>
+                                    {% endfor %}
+                                {% else %}
+                                    <span>Нет тегов</span>
+                                {% endif %}
+                </div>
+
+            </div>
+            <p class="m-0 mt-3 text-secondary">Дата публикации: {{ post.created_at|date:"d.m.Y" }}</p>
         </div>
 
-        <a href="{{ item.get_absolute_url }}" class="col-1 btn btn-primary fw-bold text-light d-flex align-items-center justify-content-center">Перейти</a>
+
+        <a href="{{ post.get_absolute_url }}" class="col-1 btn btn-primary fw-bold text-light d-flex align-items-center justify-content-center">Перейти</a>
     </div>
 {% endfor %}

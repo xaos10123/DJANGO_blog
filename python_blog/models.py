@@ -11,6 +11,9 @@ class Category(models.Model):
         verbose_name = "Категория"
         verbose_name_plural = "Категории"
 
+    def __str__(self):
+        return self.name
+
 
 class Tag(models.Model):
     name = models.CharField(max_length=100, verbose_name="Название")
@@ -18,6 +21,9 @@ class Tag(models.Model):
     class Meta:
         verbose_name = "Тег"
         verbose_name_plural = "Теги"
+
+    def __str__(self):
+        return self.name
 
 
 class Post(models.Model):
