@@ -8,9 +8,15 @@
 	<h1>{{ title }} </h1>
     <p>Всего: {{ count }}</p>
     {% if datails %}
-    
-        {% include "python_blog/post_preview_include.html" %}
+        {% if posts %}
 
+            {% include "python_blog/post_preview_include.html" %}
+            
+        {% else %}
+
+            <p class="btn btn-danger w-100 p-3">По вашему запросу ничего не найдено</p>
+            
+        {% endif %}
         
         {% include "python_blog/include_pagination.html" %}
         

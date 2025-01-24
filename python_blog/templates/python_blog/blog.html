@@ -35,7 +35,15 @@
 </form>
 
 <p>Общее количество постов: {{ posts_count }}</p>
-{% include "python_blog/post_preview_include.html" %}
+{% if posts %}
+
+    {% include "python_blog/post_preview_include.html" %}
+
+{% else %}
+
+    <p class="btn btn-danger w-100 p-3">По вашему запросу ничего не найдено</p>
+    
+{% endif %}
 
 {% include "python_blog/include_pagination.html" %}
 
