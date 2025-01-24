@@ -90,9 +90,14 @@ def post_detail(request, post_slug):
     post = Post.objects.filter(slug=post_slug).select_related('category').prefetch_related('tags').first()
     previous_page = request.META.get('HTTP_REFERER', '/')
 
-    post.views= F('views') + 1
-    post.save()
-    post.refresh_from_db()
+    session = request.session
+    session_key = f"post_views_{post.id}"
+    if session_key not in session:
+        post.views = F('views') + 1
+        post.save()
+        post.refresh_from_db()
+        session[session_key] = True
+
 
     context = {
         "post": post,
