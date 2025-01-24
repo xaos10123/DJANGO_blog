@@ -1,5 +1,5 @@
 from django.core.paginator import Paginator
-from django.db.models import Count
+from django.db.models import F, Count
 from django.shortcuts import render
 from django.urls import reverse
 from python_blog.models import Category, Post, Tag
@@ -88,10 +88,15 @@ def tag_detail(request, tag_slug):
 
 def post_detail(request, post_slug):
     post = Post.objects.filter(slug=post_slug).select_related('category').prefetch_related('tags').first()
+    previous_page = request.META.get('HTTP_REFERER', '/')
+
+    post.views= F('views') + 1
+    post.save()
+    post.refresh_from_db()
 
     context = {
         "post": post,
-
+        "previous_page": previous_page
     }
     return render(request, "python_blog/post_detail.html", context=context)
 

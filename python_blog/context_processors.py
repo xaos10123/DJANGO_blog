@@ -15,3 +15,6 @@ def menu_items(request):
     return {
         'menu_items': MENU_ITEMS
     }
+
+def go_back(request):
+    return request.META.get('HTTP_REFERER')
