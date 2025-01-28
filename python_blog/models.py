@@ -52,9 +52,8 @@ class Post(models.Model):
         ordering = ["-created_at"]
 
     def save(self, *args, **kwargs):
-        if not self.slug:
+        if not self.pk and not self.slug:
             self.slug = slugify(unidecode(self.title))
-            print(self.slug)
         super().save(*args, **kwargs)
 
     def __str__(self):

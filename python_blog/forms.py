@@ -10,14 +10,13 @@ class SearchForm(forms.Form):
 
 class PostForm(forms.ModelForm):
     model = Post
-    fields = ['title', 'content', 'category', 'tags']
-    widgets  = {
-        'title': forms.TextInput(attrs={'class': 'form-control'}),
-        'content': forms.Textarea(attrs={'class': 'form-control'}),
-        'category': forms.Select(attrs={'class': 'form-control'}, choices=Category.objects.all()),
-        'tags': forms.Textarea(attrs={'class': 'form-control'}),
+    fields = ['title', 'content', 'category', ]
+    tag_string = forms.CharField(max_length=200, required=False)
+    
+    widgets = {
+        'category': widgets.Select(attrs={'class': 'form-control'}),
     }
 
     class Meta:
         model = Post
-        fields = ['title', 'content', 'category', 'tags']
+        fields = ['title', 'content', 'category']
