@@ -21,9 +21,13 @@
         <a href="{% url "blog:tags" %}{{tag.slug}}" class="btn btn-warning py-0 px-2 fst-italic">{{tag.name}}</a>
     {% endfor %} 
 	<p class="text-body-tertiary m-0 mt-2">Просмотры: {{ post.views }}</p>
+	<a href="{% url "blog:post_update" post.slug %}" class="btn btn-danger my-3 float-end">Изменить</a>
 </div>
 
 <a href="{{ previous_page }}" class="btn btn-primary">Вернуться назад</a>
+
+
+
 
 
 	

@@ -11,6 +11,10 @@
 
 {% block content %}
 	<h1>Главная страница</h1>
+
+	<a href="{% url "blog:post_create" %}" class="btn btn-danger my-4 w-100 fs-4 fw-bold">Создать новый пост</a>
+
+
 	<h4>Последние посты:</h4>
 	{% include "python_blog/post_preview_include.html" %}
 	
