@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col col-md-6 mx-auto d-flex flex-column position-relative">
+        <h3 class="text-center">Страница регистрации</h3>
+        <form action="{% url 'user:login' %}" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary position-absolute top-100 start-50 translate-middle mt-3">Зарегистироваться</button>
+        </form>  
+    </div>
+</div>
+
+{% endblock content %}
