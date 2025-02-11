@@ -8,11 +8,11 @@ from users.forms import LoginForm, RegisterForm
 class MyLoginView(LoginView):
     template_name = "users/login.html"
     form_class = LoginForm
-    next_page = '/'
+    next_page = 'main'
 
 
 class MyLogoutView(LogoutView):
-    template_name = "users/logout.html"
+    next_page = "main"
 
 
 class MyRegisterView(CreateView):
