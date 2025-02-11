@@ -10,9 +10,8 @@
         </div>
 
         <div class="fw-bold mb-3">
-            <label for="id_content" class="form-label">Название статьи:</label>
-            <textarea id="id_content" name="content" class="form-control" placeholder="Название статьи" required >{{ form.instance.content|default:"" }}
-            </textarea>
+            <label for="id_content" class="form-label">Текст статьи:</label>
+            <textarea id="id_content" name="content" class="form-control" placeholder="Текст статьи" required>{{ form.instance.content|default:"" }}</textarea>
         </div>  
 
         <div class="fw-bold mb-3">   
@@ -22,8 +21,10 @@
 
         <div class="fw-bold mb-3">
             <label for="id_tags" class="form-label">Теги статьи (через запятую):</label>
-            <input type="text" id="id_tags" name="tag_string" class="form-control" value="{% for tag in form.instance.tags.all %}{{ tag.name }}{% if not forloop.last %}, {% endif %}{% endfor %}">
+            <input type="text" id="id_tags" name="tag_string" placeholder="Теги статьи" class="form-control" 
+                   value="{% if form.instance.id %}{% for tag in form.instance.tags.all %}{{ tag.name }}{% if not forloop.last %}, {% endif %}{% endfor %}{% endif %}">
         </div>
+        
 
         <div class="">
             {% if form.errors %}
