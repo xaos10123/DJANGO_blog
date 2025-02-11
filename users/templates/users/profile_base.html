@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<h1>Страница пользователя: {{user.username}}</h1>
+<h1>Страница пользователя: {% if user_prof %} {{user_prof.username}} {% else %} {{user.username}} {% endif %}</h1>
 
 <div class="shadow p-3 mb-5 bg-body-tertiary rounded">
     {% block profile_content %}

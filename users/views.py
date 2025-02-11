@@ -40,6 +40,7 @@ class ProfileEditView(LoginRequiredMixin, OwnerPermissionMixin, UpdateView):
     model = get_user_model()
     template_name = "users/profile_edit.html"
     form_class = ProfileEditForm
+    context_object_name = "user_prof"
     login_url = reverse_lazy("user:login")
 
     def get_success_url(self):
