@@ -2,14 +2,22 @@
     {% for item in menu_items %}
         <a href="{% url item.url_name %}" class="col btn  {% if request.path == item.url %} btn-warning {% else %} btn-primary {% endif %} m-3 fw-bold ">{{item.title}}</a>
     {% endfor %}
+
     {% if user.is_authenticated %}
+
+        <a href="" class="col btn btn-info m-3 fw-bold text-light">Кабинет {{user}}</a>
+
         <form action="{% url 'user:logout' %}" method="post" class="col m-3">
             {% csrf_token %}
             <button type="submit" class="btn btn-primary fw-bold w-100">Выйти</button>
         </form>
+
     {% else %}
+
         <a href="{% url 'user:login' %}" class="col btn btn-info m-3 fw-bold text-light">Войти</a>
+
         <a href="{% url 'user:register' %}" class="col btn btn-info text-light m-3 fw-bold">Зарегистрироваться</a>
+
     {% endif %}
 
 </div>
