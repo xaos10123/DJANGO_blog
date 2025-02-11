@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Страница пользователя: {{user.username}}</h1>
+
+<div class="shadow p-3 mb-5 bg-body-tertiary rounded">
+    {% block profile_content %}
+    
+    {% endblock profile_content %}
+</div>
+
+
+{% endblock content %}
